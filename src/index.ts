@@ -10,8 +10,6 @@ export const generate = async (options: any) => {
 
   let path = await makeDir(makeAt);
 
-  console.log(path);
-
   const modelData: Array<Model> = dmmf.datamodel.models;
 
   for (let i = 0; i < modelData.length; i++) {
