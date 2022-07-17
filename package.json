@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc"
+    "compile": "tsc",
+    "generate": "npx prisma generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/generator-helper": "^4.0.0",
-    "@prisma/sdk": "^4.0.0"
+    "@prisma/sdk": "^4.0.0",
+    "@types/node": "^18.0.5",
+    "make-dir": "^3.1.0"
   },
   "devDependencies": {
     "ts-node": "^10.9.1",

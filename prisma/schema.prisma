@@ -1,0 +1,25 @@
+datasource db {
+    provider = "mysql"
+    url      = "mysql://root:root@localhost:3605/testb?schema=public"
+}
+
+generator nestjsDto {
+    provider = "node -r ts-node/register/transpile-only src/cli.ts"
+    makeAt   = "out/generators/dtos"
+}
+
+model User {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    email     String   @unique
+    name      String?
+    posts     Post[]
+    password  String
+    salt      String?
+}
+
+model Post {
+    id        Int   @id @default(autoincrement())
+    user      User? @relation(references: [id], fields: [creatorId])
+    creatorId Int?
+}
