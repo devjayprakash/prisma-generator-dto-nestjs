@@ -1,9 +1,8 @@
 import { generatorHandler } from '@prisma/generator-helper';
-import { GeneratorOptions } from '@prisma/sdk';
 import makeDir from 'make-dir';
 import generateEntityDTO from './generator';
 
-export const generate = async (options: GeneratorOptions) => {
+export const generate = async (options: any) => {
   const { generator, dmmf } = options;
 
   let { makeAt = 'src/generator/dtos' } = generator.config;
