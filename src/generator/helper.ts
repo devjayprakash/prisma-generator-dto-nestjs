@@ -1,3 +1,5 @@
+import { Fields } from 'types';
+
 const PrismaScalarToTypeScript: Record<string, string> = {
   String: 'string',
   Boolean: 'boolean',
@@ -27,4 +29,39 @@ export const getFieldTypeWithRequiredCheck = (
   isRequired: boolean
 ) => {
   return getRequiredTreated(prismaToTSType(type), isRequired);
+};
+
+export const getUniqueFields = (fields: Array<Fields>) => {
+  return fields.filter((field) => {
+    return field.isUnique || field.isId;
+  });
+};
+
+export const generateImportsStr = (fields: Array<Fields>) => {
+  return `${fields
+    .filter((field) => field.kind === 'object')
+    .map((obj_field) => {
+      const fileAddr = `./${obj_field.type}.entity`;
+      return `import { ${obj_field.type} } from '${fileAddr}';\n`;
+    })}`;
+};
+
+export const generateFieldsToTsStr = (
+  fields: Array<Fields>,
+  className: string
+) => {
+  return `
+  ${generateImportsStr(fields)}
+  export class ${className} {
+    ${fields
+      .map(
+        (m) =>
+          `${m.name}:${
+            m.kind === 'object'
+              ? m.type
+              : getFieldTypeWithRequiredCheck(m.type, m.isRequired)
+          } ; \n\t`
+      )
+      .join('')}
+  }`;
 };

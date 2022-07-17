@@ -1,27 +1,33 @@
 import { writeFile } from 'fs/promises';
-import { getFieldTypeWithRequiredCheck } from './helper';
+import { Model } from 'types';
+import { generateFieldsToTsStr, getUniqueFields } from './helper';
 
-const generateEntityDTO = async (modelData: any, path: string) => {
-  console.log(`Processing ${modelData.name}`);
+/**
+ *
+ * @param modelData Model data
+ * @param path path at which you want to save the dtos
+ */
+export const generateConnectDTO = async (modelData: Model, path: string) => {
+  console.log(`Processing ${modelData.name} [Connect type]`);
 
-  const finalStr = `export class ${modelData.name} {
-    ${modelData.fields
-      .filter((k: any) => k.kind === 'scalar')
-      .map(
-        (m: any) =>
-          `${m.name}:${getFieldTypeWithRequiredCheck(
-            m.type,
-            m.isRequired
-          )} ; \n\t`
-      )
-      .join('')}
-  }`;
+  const fields = getUniqueFields(modelData.fields);
+  const tsStr = generateFieldsToTsStr(fields, modelData.name);
+  const fileName = `${modelData.name}.connect.ts`;
+
+  await writeFile(`${path}/${fileName}`, tsStr);
+};
+
+/**
+ * Generates Entitly DTO
+ * @param modelData Model data
+ * @param path path at which we want to save the dtos
+ */
+export const generateEntityDTO = async (modelData: Model, path: string) => {
+  console.log(`Processing ${modelData.name} [Entity Type]`);
+
+  const finalStr = generateFieldsToTsStr(modelData.fields, modelData.name);
 
   const fileName = `${modelData.name}.entity.ts`;
 
-  console.log(finalStr);
-
   await writeFile(`${path}/${fileName}`, finalStr);
 };
-
-export default generateEntityDTO;

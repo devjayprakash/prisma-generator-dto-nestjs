@@ -1,6 +1,7 @@
 import { generatorHandler } from '@prisma/generator-helper';
 import makeDir from 'make-dir';
-import generateEntityDTO from './generator';
+import { Model } from 'types';
+import { generateConnectDTO, generateEntityDTO } from './generator';
 
 export const generate = async (options: any) => {
   const { generator, dmmf } = options;
@@ -9,11 +10,12 @@ export const generate = async (options: any) => {
 
   let path = await makeDir(makeAt);
 
-  const modelData = dmmf.datamodel.models;
+  const modelData: Array<Model> = dmmf.datamodel.models;
 
-  modelData.forEach((data: any) => {
-    generateEntityDTO(data, path);
-  });
+  for (let i = 0; i < modelData.length; i++) {
+    await generateEntityDTO(modelData[i], path);
+    await generateConnectDTO(modelData[i], path);
+  }
 };
 
 generatorHandler({
