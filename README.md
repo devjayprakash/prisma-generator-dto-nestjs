@@ -13,7 +13,7 @@ This is a DTO generator for prisma and nest js
 - [ ] Generate create DTO
 - [x] Handle imports
 - [ ] Logic for conditinal dto entity
-- [ ] Handle various file naming conventions
+- [x] Handle various file naming conventions
 
 
 <h2>Warning :: The package is in very early stage of development and is not recommended to be used for anything other than side projects</h2>

@@ -1,4 +1,6 @@
-import { Fields } from 'types';
+import { getFileName } from '../generator/filename';
+import { Config, Fields } from 'types';
+import { Caseing } from './constants';
 
 const PrismaScalarToTypeScript: Record<string, string> = {
   String: 'string',
@@ -37,21 +39,32 @@ export const getUniqueFields = (fields: Array<Fields>) => {
   });
 };
 
-export const generateImportsStr = (fields: Array<Fields>) => {
+export const captalize = (str: string) => {
+  return str[0].toUpperCase() + str.slice(1, str.length);
+};
+
+export const generateImportsStr = (fields: Array<Fields>, config: Config) => {
   return `${fields
     .filter((field) => field.kind === 'object')
     .map((obj_field) => {
-      const fileAddr = `./${obj_field.type}.entity`;
-      return `import { ${obj_field.type} } from '${fileAddr}';\n`;
+      const fileName = getFileName({
+        caseing: config.caseing,
+        suffix: config.suffix,
+        prefix: config.prefix,
+        name: obj_field.type,
+      });
+      const fileAddr = `./${fileName}`;
+      return `import { ${captalize(obj_field.type)} } from '${fileAddr}';\n`;
     })}`;
 };
 
 export const generateFieldsToTsStr = (
   fields: Array<Fields>,
-  className: string
+  className: string,
+  config: Config
 ) => {
   return `
-  ${generateImportsStr(fields)}
+  ${generateImportsStr(fields, config)}
   export class ${className} {
     ${fields
       .map(

@@ -1,33 +1,57 @@
 import { writeFile } from 'fs/promises';
-import { Model } from 'types';
-import { generateFieldsToTsStr, getUniqueFields } from './helper';
+import { Caseing } from '../utils/constants';
+import { Config, Model } from 'types';
+import { generateFieldsToTsStr, getUniqueFields } from '../utils/helper';
+import { getFileName } from './filename';
 
-/**
- *
- * @param modelData Model data
- * @param path path at which you want to save the dtos
- */
-export const generateConnectDTO = async (modelData: Model, path: string) => {
-  console.log(`Processing ${modelData.name} [Connect type]`);
+class DTOGenerator {
+  //configs
+  config: Config;
+  modelData: Model;
+  saveAt: string;
 
-  const fields = getUniqueFields(modelData.fields);
-  const tsStr = generateFieldsToTsStr(fields, modelData.name);
-  const fileName = `${modelData.name}.connect.ts`;
+  constructor(config: Config, modelData: Model, saveAt: string) {
+    this.config = config;
+    this.modelData = modelData;
+    this.saveAt = saveAt;
+  }
 
-  await writeFile(`${path}/${fileName}`, tsStr);
-};
+  async generateConnectDTO() {
+    console.log(`Processing ${this.modelData.name} [Connect type]`);
 
-/**
- * Generates Entitly DTO
- * @param modelData Model data
- * @param path path at which we want to save the dtos
- */
-export const generateEntityDTO = async (modelData: Model, path: string) => {
-  console.log(`Processing ${modelData.name} [Entity Type]`);
+    const fields = getUniqueFields(this.modelData.fields);
+    const tsStr = generateFieldsToTsStr(
+      fields,
+      this.modelData.name,
+      this.config
+    );
+    const fileName = getFileName({
+      name: this.modelData.name,
+      prefix: '',
+      suffix: 'connect',
+      caseing: this.config.caseing,
+    });
 
-  const finalStr = generateFieldsToTsStr(modelData.fields, modelData.name);
+    await writeFile(`${this.saveAt}/${fileName}`, tsStr);
+  }
+  async generateEntityDTO() {
+    console.log(`Processing ${this.modelData.name} [Entity Type]`);
 
-  const fileName = `${modelData.name}.entity.ts`;
+    const finalStr = generateFieldsToTsStr(
+      this.modelData.fields,
+      this.modelData.name,
+      this.config
+    );
 
-  await writeFile(`${path}/${fileName}`, finalStr);
-};
+    const fileName = getFileName({
+      name: this.modelData.name,
+      prefix: '',
+      suffix: 'entity',
+      caseing: this.config.caseing,
+    });
+
+    await writeFile(`${this.saveAt}/${fileName}`, finalStr);
+  }
+}
+
+export default DTOGenerator;

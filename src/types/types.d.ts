@@ -1,3 +1,5 @@
+import { Caseing } from '../utils/constants';
+
 export type FieldType = 'scalar' | 'object';
 
 export type PrismaTypes =
@@ -33,4 +35,10 @@ export interface Model {
   name: string;
   dbName: string | null;
   fields: Array<Fields>;
+}
+
+export interface Config {
+  prefix: string;
+  suffix: string;
+  caseing: Caseing;
 }
