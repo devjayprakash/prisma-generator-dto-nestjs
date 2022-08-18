@@ -1,11 +1,11 @@
-import { captalize } from '../utils/helper';
-import { Caseing } from '../utils/constants';
+import { captalize } from "../utils/helper";
+import { Caseing } from "../utils/constants";
 
 const generateCorrectCaseing = (
   wrds: Array<string>,
   caseing: Caseing
 ): string => {
-  if (caseing === 'CAMEL_CASE') {
+  if (caseing === "CAMEL_CASE") {
     return wrds
       .map((wrd, i) => {
         if (i !== 0) {
@@ -14,31 +14,31 @@ const generateCorrectCaseing = (
           return wrd.toLocaleLowerCase();
         }
       })
-      .join('');
-  } else if (caseing == 'KEBAB_CASE') {
+      .join("");
+  } else if (caseing == "KEBAB_CASE") {
     return wrds
       .map((wrd, i) => {
         if (i !== wrds.length - 1) {
-          return wrd.toLocaleLowerCase() + '-';
+          return wrd.toLocaleLowerCase() + "-";
         } else {
           return wrd.toLocaleLowerCase();
         }
       })
-      .join('');
-  } else if (caseing === 'PASCAL_CASE') {
+      .join("");
+  } else if (caseing === "PASCAL_CASE") {
     return wrds
       .map((wrd) => {
         return captalize(wrd);
       })
-      .join('');
-  } else if (caseing === 'SNAKE_CASE') {
+      .join("");
+  } else if (caseing === "SNAKE_CASE") {
     return wrds
       .map((wrd, i) => {
         return i !== wrds.length - 1
-          ? wrd.toLocaleLowerCase() + '_'
+          ? wrd.toLocaleLowerCase() + "_"
           : wrd.toLocaleLowerCase();
       })
-      .join('');
+      .join("");
   }
 };
 
@@ -53,8 +53,8 @@ type GetFileNameFunction = (config: GetFileTypeOptions) => string;
 
 export const getFileName: GetFileNameFunction = ({
   name,
-  prefix = '',
-  suffix = '',
+  prefix = "",
+  suffix = "",
   caseing,
 }) => {
   const wrds = [];
@@ -62,14 +62,14 @@ export const getFileName: GetFileNameFunction = ({
   wrds.push(name);
   suffix && wrds.push(suffix);
 
-  return generateCorrectCaseing(wrds, caseing) + '.ts';
+  return generateCorrectCaseing(wrds, caseing);
 };
 
 console.log(
   getFileName({
-    name: 'Test',
-    suffix: 'entity',
-    caseing: 'SNAKE_CASE',
-    prefix: 'dto',
+    name: "Test",
+    suffix: "entity",
+    caseing: "SNAKE_CASE",
+    prefix: "dto",
   })
 );
