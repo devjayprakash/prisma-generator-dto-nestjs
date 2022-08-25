@@ -5,7 +5,14 @@
   "main": "dist/cli.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "generate": "npx prisma generate"
+    "generate": "npx prisma generate",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "keywords": [
     "nestjs",
@@ -17,6 +24,12 @@
   "dependencies": {
     "@prisma/generator-helper": "^4.0.0",
     "@types/node": "^18.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
     "make-dir": "^3.1.0"
   },
   "devDependencies": {

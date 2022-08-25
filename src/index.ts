@@ -1,37 +1,32 @@
-import { generatorHandler } from "@prisma/generator-helper";
-import makeDir from "make-dir";
-import { Config, Model } from "types";
-import DTOGenerator from "./generator";
-import { Caseing, validCaseConfig } from "./utils/constants";
+import { generatorHandler, GeneratorOptions } from '@prisma/generator-helper';
+import makeDir from 'make-dir';
+import { Config, Model } from 'types';
+import DTOGenerator from './generator';
+import { Caseing, validCaseConfig } from './utils/constants';
 
 const getCorrectCaseing = (caseing: string): string => {
-  if (caseing === "camel") {
-    return "CAMEL_CASE";
-  } else if (caseing === "kebab") {
-    return "KEBAB_CASE";
-  } else if (caseing === "pascal") {
-    return "PASCAL_CASE";
-  } else if (caseing === "snake") {
-    return "SNAKE_CASE";
+  if (caseing === 'camel') {
+    return 'CAMEL_CASE';
+  } else if (caseing === 'kebab') {
+    return 'KEBAB_CASE';
+  } else if (caseing === 'pascal') {
+    return 'PASCAL_CASE';
+  } else if (caseing === 'snake') {
+    return 'SNAKE_CASE';
   } else {
-    throw new Error("invalid caseing config in get correct caseing function");
+    throw new Error('invalid caseing config in get correct caseing function');
   }
 };
 
-export const generate = async (options: any) => {
+export const generate = async (options: GeneratorOptions) => {
   const { generator, dmmf } = options;
 
   console.log(generator);
 
-  const {
-    makeAt = "src/generator/dtos",
-    caseing = "camel",
-    prefix = "",
-    suffix = "",
-  } = generator.config;
+  const { makeAt = 'src/generator/dtos', caseing = 'camel', prefix = '', suffix = '' } = generator.config;
 
   if (!validCaseConfig.includes(caseing)) {
-    console.error("Invalid caseing config provided");
+    console.error('Invalid caseing config provided');
     return;
   }
 
@@ -53,9 +48,8 @@ export const generate = async (options: any) => {
 
 generatorHandler({
   onManifest: () => ({
-    defaultOutput: "./src/generated/nestjs-dto",
-    prettyName: "NestJS DTO generator",
+    defaultOutput: './src/generated/nestjs-dto',
+    prettyName: 'NestJS DTO generator',
   }),
-  //@ts-ignore
   onGenerate: generate,
 });
