@@ -7,12 +7,9 @@
     "build": "tsc --project tsconfig.json",
     "generate": "npx prisma generate",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "keywords": [
     "nestjs",
