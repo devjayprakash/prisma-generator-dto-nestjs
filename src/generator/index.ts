@@ -1,8 +1,7 @@
-import { writeFile } from "fs/promises";
-import { Caseing } from "../utils/constants";
-import { Config, Model } from "types";
-import { generateFieldsToTsStr, getUniqueFields } from "../utils/helper";
-import { getFileName } from "./filename";
+import { writeFile } from 'fs/promises';
+import { Config, Model } from 'types';
+import { generateFieldsToTsStr, getUniqueFields } from '../utils/helper';
+import { getFileName } from './filename';
 
 class DTOGenerator {
   //configs
@@ -20,15 +19,11 @@ class DTOGenerator {
     console.log(`Processing ${this.modelData.name} [Connect type]`);
 
     const fields = getUniqueFields(this.modelData.fields);
-    const tsStr = generateFieldsToTsStr(
-      fields,
-      this.modelData.name,
-      this.config
-    );
+    const tsStr = generateFieldsToTsStr(fields, this.modelData.name, this.config);
     const fileName = getFileName({
       name: this.modelData.name,
-      prefix: "",
-      suffix: "connect",
+      prefix: '',
+      suffix: 'connect',
       caseing: this.config.caseing,
     });
 
@@ -37,16 +32,12 @@ class DTOGenerator {
   async generateEntityDTO() {
     console.log(`Processing ${this.modelData.name} [Entity Type]`);
 
-    const finalStr = generateFieldsToTsStr(
-      this.modelData.fields,
-      this.modelData.name,
-      this.config
-    );
+    const finalStr = generateFieldsToTsStr(this.modelData.fields, this.modelData.name, this.config);
 
     const fileName = getFileName({
       name: this.modelData.name,
-      prefix: "",
-      suffix: "entity",
+      prefix: '',
+      suffix: 'entity',
       caseing: this.config.caseing,
     });
 
